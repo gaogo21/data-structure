@@ -44,8 +44,30 @@ void test3()
 	priority_queue<int> pq(vec.begin(), vec.end());
 	cout << endl;
 }
+
+void test4()
+{
+	priority_queue<int, std::vector<int>, greater<int>> pq;
+	pq.push(3);
+	pq.push(1);
+	pq.push(4);
+	pq.push(1);
+	pq.push(5);
+	pq.push(9);
+	pq.push(2);
+	pq.push(6);
+	pq.push(5);
+
+	for (int i = 0; i < 9; ++i)
+	{
+		cout << pq.top() << " ";
+		pq.pop();
+	}
+	cout << endl;
+
+}
 int main()
 {
-	test3();
+	test4();
 	return 0;
 }

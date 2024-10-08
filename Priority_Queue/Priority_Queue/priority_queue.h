@@ -14,6 +14,7 @@ namespace zyy
 	template <class T>
 	class less
 	{
+	public:
 		bool operator()(const T& x, const T& y) const
 		{
 			return x < y;
@@ -24,6 +25,7 @@ namespace zyy
 	template <class T>
 	class greater
 	{
+	public:
 		bool operator()(const T& x, const T& y) const
 		{
 			return x > y;
@@ -61,14 +63,18 @@ namespace zyy
 		void AdjustDown(int parent)
 		{
 			size_t child = parent * 2 + 1;
+
+			//找到左右孩子中大的那一个
 			while (child < _con.size())
 			{
-				if (child + 1 < _con.size() && _con[child] < _con[child + 1])
+				//if (child + 1 < _con.size() && _con[child] < _con[child + 1])
+				if (child + 1 < _con.size() && _comFunc(_con[child], _con[child + 1]))
 				{
 					++child;
 				}
 
-				if (_con[parent] < _con[child])
+				//if (_con[parent] < _con[child])
+				if (_comFunc(_con[parent], _con[child]))
 				{
 					std::swap(_con[parent], _con[child]);
 					parent = child;
@@ -79,6 +85,62 @@ namespace zyy
 					break;
 				}
 			}
+		}
+
+		//传入的是child,一般是插入进行向上调整
+		void AdjustUp(int child)
+		{
+			int parent = (child - 1) / 2;
+			while (child > 0)
+			{
+				//把大的往上调
+				//if (_con[parent] < _con[child])
+				if (_comFunc(_con[parent], _con[child]))
+				{
+					std::swap(_con[parent], _con[child]);
+					//child往上调
+					child = parent;
+					parent = (child - 1) / 2;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+
+		void push(const T& x)
+		{
+			//1.将x放入到末尾
+			_con.push_back(x);
+
+			//2.向上调整 -- 最后一个元素
+			AdjustUp(_con.size() - 1);
+		}
+
+		void pop()
+		{
+			if (empty())
+				return;
+			//1.将堆顶元素和堆底元素交换
+			std::swap(_con[0], _con[_con.size() - 1]);
+			_con.pop_back();
+			AdjustDown(0);
+		}
+
+		bool empty() const
+		{
+			return _con.empty();
+		}
+
+		size_t size() const
+		{
+			return _con.size();
+		}
+
+		T& top()
+		{
+			return _con[0];
 		}
 	private:
 		Container _con;   //使用的vector的底层结构
