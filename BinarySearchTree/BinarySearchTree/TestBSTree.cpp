@@ -44,11 +44,14 @@ void test2()
 	//1.测试没有孩子
 	//bst.Erase(7);
 
-	//2.测试有一个孩子
+	//2.测试有一个孩子 -> 有右孩子
 	//bst.Erase(10);
 
-	//3.测试有两个孩子
-	bst.Erase(6);
+	//3.测试有一个孩子 -> 有左孩子
+	bst.Erase(14);
+	
+	//4.测试有两个孩子
+	//bst.Erase(6);
 
 	cout << "after: ";
 	bst.Inorder();
